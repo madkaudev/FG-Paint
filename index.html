@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <!-- Set the favicon image and title -->
+        <title>FG Paint</title>
+        <link rel="icon" href="" type="image/x-icon"/> <!-- Doesn't exist yet -->
+        <!-- Author and description -->
+        <meta name="author" content="Mad Kau"/>
+        <meta name="description" content="Faraway Giant online paint tool. An alternative to MS Paint."/>
+        <!-- Basic Metadata for Open Graph Protocol -->
+        <meta property="og:title" content="FG Paint"/>
+        <meta property="og:type" content="website"/>
+        <meta property="og:url" content="https://www.FG-Paint.farawaygiant.com"/> <!-- Doesn't exist yet -->
+        <meta property="og:image" content=""/> <!-- Doesn't exist yet -->
+        <!-- Character set and viewport -->
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width"/>
+        <!-- Load styles and scripts -->
+         <link rel="stylesheet" href="styles/style.css"/> 
+        <link rel="stylesheet" href="styles/canvas.css"/> 
+        <script src="scripts/canvas.js" defer></script>
+        
+    </head>
+    <body>
+        <header>
+            <!-- Track the mouse on canvas -->
+            <h3 id="header-h3">Current Pixel: (0,0)</h3>
+        </header>
+        <main>
+            <!-- Main painting canvas -->
+            <canvas id="paint" width="1080" height="720"></canvas>
+        </main>
+        <footer></footer>
+    </body>
+</html>
