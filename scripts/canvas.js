@@ -1,11 +1,37 @@
 // Initialize the canvas.
 const canvas = document.getElementById("paint");
 const ctx = canvas.getContext("2d");
+const Width = document.getElementById("paint").width;
+const Height = document.getElementById("paint").height;
 
+// Convert RGB to Hex.
+function RGBToHex(r, g, b) {
+    const RedHex = r > 16 ? r.toString(16) : "0"+ r.toString(16)
+    const GreenHex = g > 16 ? g.toString(16) : "0"+ g.toString(16)
+    const BlueHex = b > 16 ? b.toString(16) : "0"+ b.toString(16)
+    return "#" + RedHex + GreenHex + BlueHex;
+}
 // Draws a single pixel given an x and y coordinate.
 function drawPoint(x, y) {
-    ctx.fillStyle = "black";
-    ctx.fillRect(x, y, 1, 1);
+    if (brushType === "colorPicker") {
+        if (x >= 0 && x < Width && y >= 0 && y < Height) {
+            const Pixel = ctx.getImageData(x, y, 1, 1);
+            const Data = Pixel.data;
+            ColorInput.value = RGBToHex(Data[0], Data[1], Data[2]);
+            console.log(ColorInput.value)
+        }
+        else {
+            console.log("You can only pick a color from the canvas!");
+        }
+    }
+
+    ctx.fillStyle = brushColor;
+    if (brushType === "pencil") {
+        ctx.fillRect(x, y, brushSize, brushSize);
+    }
+    else if (brushType === "eraser") {
+        ctx.clearRect(x, y, brushSize, brushSize);
+    }
 }
 // Draws a line between two points using Bresenham's line algorithm (version that supports all octants).
 // (I barely understand the full octant version.)
@@ -44,9 +70,9 @@ var prevY = null;
 // Main draw function.
 function draw(event) {
     // Set x and y coordinates of mouse based on canvas location on document
-    const bounding = canvas.getBoundingClientRect();
-    let x = Math.floor(event.clientX - bounding.left);
-    let y = Math.floor(event.clientY - bounding.top);
+    const Bounding = canvas.getBoundingClientRect();
+    let x = Math.floor(event.clientX - Bounding.left);
+    let y = Math.floor(event.clientY - Bounding.top);
 
     // Update the current pixel tracker element
     const headerH3 = document.getElementById("header-h3")
@@ -71,6 +97,14 @@ document.addEventListener("mousedown", (event) => {
     // If left mouse button is held down, set the boolean accordingly
     if (event.button === 0) {
         isMouseDown = true;
+        // Set x and y coordinates of mouse based on canvas location on document
+        const Bounding = canvas.getBoundingClientRect();
+        let x = Math.floor(event.clientX - Bounding.left);
+        let y = Math.floor(event.clientY - Bounding.top);
+        // Draw a singular point for a mouse click
+        drawPoint(x, y);
+        prevX = x;
+        prevY = y;
     }
 });
 // Event listener to modify isMouseDown boolean and reset prevX and prevY.

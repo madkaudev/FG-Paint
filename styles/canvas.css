@@ -1,4 +1,6 @@
 /* Set painting canvas background color to white */
 #paint {
     background-color: white;
+    width: 1280px;
+    height: 720px;
 }

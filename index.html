@@ -6,7 +6,7 @@
         <link rel="icon" href="" type="image/x-icon"/> <!-- Doesn't exist yet -->
         <!-- Author and description -->
         <meta name="author" content="Mad Kau"/>
-        <meta name="description" content="Faraway Giant online paint tool. An alternative to MS Paint."/>
+        <meta name="description" content="FarawayGiant Paint. An alternative to MS Paint."/>
         <!-- Basic Metadata for Open Graph Protocol -->
         <meta property="og:title" content="FG Paint"/>
         <meta property="og:type" content="website"/>
@@ -16,10 +16,10 @@
         <meta charset="utf-8"/>
         <meta name="viewport" content="width=device-width"/>
         <!-- Load styles and scripts -->
-         <link rel="stylesheet" href="styles/style.css"/> 
-        <link rel="stylesheet" href="styles/canvas.css"/> 
+        <link rel="stylesheet" href="styles/style.css"/> 
+        <link rel="stylesheet" href="styles/canvas.css"/>
+        <script src="scripts/options.js" defer></script>
         <script src="scripts/canvas.js" defer></script>
-        
     </head>
     <body>
         <header>
@@ -27,9 +27,28 @@
             <h3 id="header-h3">Current Pixel: (0,0)</h3>
         </header>
         <main>
-            <!-- Main painting canvas -->
-            <canvas id="paint" width="1080" height="720"></canvas>
+            <div id="main-container">
+                <!-- Main painting canvas -->
+                <canvas id="paint" width="1280" height="720"></canvas>
+                <div id="option-container">
+                    <button id="brush-size" class="option">Change brush size</button>
+                    <button id="set-eraser" class="option">Eraser</button>
+                    <button id="set-pencil" class="option">Pencil</button>
+                    <button id="set-color-picker" class="option">Color Picker</button>
+                    <input type="color" id="color-input" class="option" name="color-input" value="#000000">
+                    <!--
+                    <button id="set-color" class="option">Set Color</button>
+                    <dialog id="color-dialog">
+                        <button id="close-color-dialog">X</button>
+                        <br>
+                        <label>Select your color:</label>
+                        <br>
+                        <input type="color" id="color-input" value="#000000">
+                    </dialog>
+                    -->
+                </div>
+            </div>
         </main>
-        <footer></footer>
+        <footer>Made with BST by FarawayGiant</footer>
     </body>
 </html>

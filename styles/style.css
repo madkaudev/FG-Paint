@@ -1,4 +1,25 @@
 /* Set the background color */
 body {
     background-color: rgb(150, 157, 163);
+    
+}
+
+/* Option class represents buttons that control the user's tools */
+.option {
+    width: 64px;
+    height: 64px;
+}
+
+/* Set the main container properties */
+#main-container {
+    display: flex;
+    margin: 1%;
+}
+
+/* Set the main container properties */
+#option-container {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    grid-auto-rows: 64px;
+    margin-left: 2%;
 }
