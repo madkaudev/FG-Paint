@@ -6,9 +6,9 @@ Version 0.1.0 (Current Version)
 - Introduces eraser, pencil, and color picker tools
 - Customizable color options
 - Still no undo button
-<br>
+
 Version 0.0.0
 <br>
-- Currently only supports 1px black lines
-- Tracker for mouse on canvas
-- Lacks an erase feature or undo button
+- Currently only supports 1px black lines <br>
+- Tracker for mouse on canvas <br>
+- Lacks an erase feature or undo button <br>
