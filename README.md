@@ -1,5 +1,5 @@
 # FG-Paint
-Faraway Giant online paint tool. An alternative to MS Paint.<br>
+Online, Javascript based paint tool. Draw a little.<br>
 <br>
 Version 0.1.0 (Current Version)
 <br>
