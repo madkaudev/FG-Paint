@@ -1,6 +1,6 @@
 // Initialize the canvas.
 const canvas = document.getElementById("paint");
-const ctx = canvas.getContext("2d");
+const ctx = canvas.getContext("2d", { alpha: false });
 const Width = document.getElementById("paint").width;
 const Height = document.getElementById("paint").height;
 
@@ -11,6 +11,14 @@ function RGBToHex(r, g, b) {
     const BlueHex = b > 16 ? b.toString(16) : "0"+ b.toString(16)
     return "#" + RedHex + GreenHex + BlueHex;
 }
+// Convert Hex to RGB.
+function HexToRGB(hex) {
+    const Red = parseInt(hex.substring(1, 3), 16);
+    const Green = parseInt(hex.substring(3, 5), 16);
+    const Blue = parseInt(hex.substring(5, 7), 16);
+    return [Red, Green, Blue];
+}
+
 // Draws a single pixel given an x and y coordinate.
 function drawPoint(x, y) {
     if (brushType === "colorPicker") {
@@ -24,13 +32,90 @@ function drawPoint(x, y) {
             console.log("You can only pick a color from the canvas!");
         }
     }
-
     ctx.fillStyle = brushColor;
     if (brushType === "pencil") {
-        ctx.fillRect(x, y, brushSize, brushSize);
+        if (brushSize === 1) {
+            ctx.fillRect(x, y, brushSize, brushSize);
+        }
+        else {
+            const Radius = brushSize/2;
+            ctx.beginPath();
+            ctx.arc(x, y, Radius, 0, Math.PI*2);
+            ctx.fill();
+        }
     }
     else if (brushType === "eraser") {
         ctx.clearRect(x, y, brushSize, brushSize);
+    }
+    else if (brushType === "paintBucket") {
+        // Starting pixel's data
+        const Pixel = ctx.getImageData(x, y, 1, 1);
+        const Data = Pixel.data;
+
+        // Initial color to copy over
+        const InitColor = HexToRGB(brushColor);
+
+        // Check if the starting pixel is the same as the current color
+        const IsSameColor = brushColor == RGBToHex(Data[0], Data[1], Data[2]);
+        console.log(IsSameColor);
+
+        // If the starting color is different than the pixel and the current pixel is in range of canvas, continue to fill
+        if (!IsSameColor && (x >= 0 && x < Width && y >= 0 && y < Height)) {
+            // Get pixel data for the whole canvas
+            const PageImageData = ctx.getImageData(0, 0, Width, Height);
+            const PageData = PageImageData.data;
+
+            // Function to get the rgba profile of a pixel at (x, y)
+            function getPixelColor(x, y) {
+                const Idx = (y * Width + x) * 4;
+                return [PageData[Idx], PageData[Idx + 1], PageData[Idx + 2], PageData[Idx + 3]];
+            }
+            // Function to set the rgba profile of a pixel at (x, y)
+            function setPixelColor(x, y, r, g, b, a = 255) {
+                const Idx = (y * Width + x) * 4;
+                PageData[Idx] = r;
+                PageData[Idx + 1] = g;
+                PageData[Idx + 2] = b;
+                PageData[Idx + 3] = a;
+            }
+            // Function to compare rbga profiles of a pixel to the starting pixel
+            const TargetColor = getPixelColor(x, y);
+            function comparePixels(x2, y2) {
+                const Tolerance = 96;
+                const Pixel2 = getPixelColor(x2, y2);
+                const SquareError = (TargetColor[0] - Pixel2[0]) ** 2 +
+                                    (TargetColor[1] - Pixel2[1]) ** 2 +
+                                    (TargetColor[2] - Pixel2[2]) ** 2;
+                return SquareError < Tolerance**2;
+            }
+            
+            // Stack to track which pixels must be filled
+            const FillStack = [];
+            FillStack.push([x, y]);
+            // Set to track visited pixels
+            const Visited = new Set();
+            Visited.add(`${x},${y}`);
+
+            // Loop through stack and track pixels to fill
+            while (FillStack.length > 0) {
+                const CoordPair = FillStack.pop();
+                const CoordX = CoordPair[0];
+                const CoordY = CoordPair[1];
+                setPixelColor(CoordX, CoordY, InitColor[0], InitColor[1], InitColor[2], 255);
+
+                const NextCoords = [[CoordX-1, CoordY], [CoordX+1, CoordY], [CoordX, CoordY-1], [CoordX, CoordY+1]];
+
+                for (const [nX, nY] of NextCoords) {
+                    if ((nX >= 0 && nX < Width && nY >= 0 && nY < Height) && comparePixels(nX, nY) && !Visited.has(`${nX},${nY}`)) {
+                        FillStack.push([nX, nY]);
+                        Visited.add(`${nX},${nY}`);
+                    }
+                }
+            }
+
+            // Fill canvas with new paint pixels
+            ctx.putImageData(PageImageData, 0, 0);
+        }
     }
 }
 // Draws a line between two points using Bresenham's line algorithm (version that supports all octants).
@@ -114,4 +199,4 @@ document.addEventListener("mouseup", (event) => {
     prevY = null;
 });
 // Event listener specifically for the canvas to call draw() upon mouse movement.
-canvas.addEventListener("mousemove", (event) => draw(event))
+canvas.addEventListener("mousemove", (event) => draw(event));
