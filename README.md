@@ -1,7 +1,7 @@
 # FG-Paint
 Online, Javascript based paint tool. Draw a little.<br>
 <br>
-Version 0.1.5 (Current Version)
+Version 0.1.1 (Current Version)
 <br>
 - Introduces the paint bucket option for flood filling
 - Yet still, no undo button
