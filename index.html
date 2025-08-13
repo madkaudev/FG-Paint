@@ -21,15 +21,17 @@
         <!-- Character set and viewport -->
         <meta charset="utf-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        <!-- Load styles and scripts -->
+        <!-- Load stylesheets -->
         <link rel="stylesheet" href="styles/style.css"/> 
         <link rel="stylesheet" href="styles/canvas.css"/>
+        <!-- Load scripts -->
         <script src="scripts/options.js" defer></script>
+        <script src="scripts/canvasFunctions.js" defer></script>
         <script src="scripts/canvas.js" defer></script>
     </head>
     <body>
         <header>
-            <!-- Track the mouse on canvas -->
+            <!-- Coordinates of mouse -->
             <h3 id="header-h3">Current Pixel: (0,0)</h3>
         </header>
         <main>
@@ -37,17 +39,18 @@
                 <!-- Main painting canvas -->
                 <canvas id="paint" width="1280" height="720"></canvas>
                 <div id="option-container">
-                    <button id="set-brush-size" class="option">Change brush size</button>
-                    <button id="set-eraser" class="option">Eraser</button>
-                    <button id="set-pencil" class="option">Pencil</button>
-                    <button id="set-paint-bucket" class="option">Paint Bucket</button>
-                    <!--<button id="set-spray-paint" class="option">Spray Paint</button>-->
-                    <button id="set-color-picker" class="option">Color Picker</button>
-                    <input type="color" id="color-input" class="option" name="color-input" value="#000000">
-                    <!--<button id="set-alpha" class="option">Change Alpha</button>-->
+                    <button id="set-brush-size" class="option" title="Change brush size">Change brush size</button>
+                    <button id="set-eraser" class="option" title="Eraser">Eraser</button>
+                    <button id="set-pencil" class="option" title="Pencil">Pencil</button>
+                    <button id="set-paint-bucket" class="option" title="Paint bucket">Paint Bucket</button>
+                    <button id="set-spray-paint" class="option" title="Spray paint">Spray Paint</button>
+                    <button id="set-color-picker" class="option" title="Color picker">Color Picker</button>
+                    <input type="color" id="color-input" class="option" name="color-input" value="#000000" title="Color input">
                 </div>
             </div>
         </main>
-        <footer>Made with BST by FarawayGiant</footer>
+        <footer>
+            Made with BST by FarawayGiant
+        </footer>
     </body>
 </html>

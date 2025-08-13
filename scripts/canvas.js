@@ -1,273 +1,55 @@
 // Initialize the canvas.
 const canvas = document.getElementById("paint");
 const ctx = canvas.getContext("2d");
-ctx.imageSmoothingEnabled = false;
+//ctx.imageSmoothingEnabled = false;
 // Adjust width and height of canvas based on viewport
-canvas.width = screen.width * 2 / 3;
-canvas.height = screen.height * 2 / 3;
+canvas.width = screen.width * 2 / 3 * window.devicePixelRatio;
+canvas.height = screen.height * 2 / 3 * window.devicePixelRatio;
 // Get new width and height of canvas
 const Width = canvas.width;
 const Height = canvas.height;
-
-// Convert RGB to Hex.
-function RGBToHex(r, g, b) {
-    const RedHex = r > 16 ? r.toString(16) : "0" + r.toString(16)
-    const GreenHex = g > 16 ? g.toString(16) : "0" + g.toString(16)
-    const BlueHex = b > 16 ? b.toString(16) : "0" + b.toString(16)
-    return "#" + RedHex + GreenHex + BlueHex;
-}
-// Convert Hex to RGB.
-function HexToRGB(hex) {
-    const Red = parseInt(hex.substring(1, 3), 16);
-    const Green = parseInt(hex.substring(3, 5), 16);
-    const Blue = parseInt(hex.substring(5, 7), 16);
-    return [Red, Green, Blue];
-}
-// Check if a pixel is in bounds of the canvas
-function checkInBounds(x, y) {
-    return x >= 0 && x < Width && y >= 0 && y < Height;
-}
-
-// Pencil function
-function pencil(x, y) {
-    // If the brush size is 1 fill with a 1px by 1px brush
-    if (brushSize === 1) {
-        ctx.fillRect(x, y, brushSize, brushSize);
-    }
-    // Otherwise, use a circle brush with a diameter of var size
-    else {
-        const Radius = brushSize/2;
-        ctx.beginPath();
-        ctx.arc(x, y, Radius, 0, Math.PI*2);
-        ctx.fill();
-    }
-}
-// Color picker function
-function colorPicker(x, y) {
-    // Check if current pixel selected is in range
-    if (x >= 0 && x < Width && y >= 0 && y < Height) {
-        // Get ImageData for the current pixel
-        const Pixel = ctx.getImageData(x, y, 1, 1);
-        const Data = Pixel.data;
-        // Set the color of the color input element to the current pixel's color
-        ColorInput.value = RGBToHex(Data[0], Data[1], Data[2]);
-        console.log(ColorInput.value)
-        console.log(Data[3]);
-    }
-    // If the pixel is not in range, write a message to console
-    else {
-        console.log("You can only pick a color from the canvas!");
-    }
-}
-// Paint bucket function
-function paintBucket(x, y) {
-    // Selected pixel's data
-    const SelectedPixel = ctx.getImageData(x, y, 1, 1);
-    const SelectedData = SelectedPixel.data;
-
-    // Color to flood fill with
-    const FillColor = HexToRGB(brushColor);
-
-    // Check if the selected pixel color is the same as the current brush color
-    const IsSameColor = brushColor === RGBToHex(SelectedData[0], SelectedData[1], SelectedData[2]) 
-                        && SelectedData[3] > 0;
-    console.log(IsSameColor);
-
-    // Continue to fill if conditions are met
-    if (!IsSameColor && checkInBounds(x, y)) {
-        // Get pixel data for the whole canvas
-        const PageImageData = ctx.getImageData(0, 0, Width, Height);
-        const PageData = PageImageData.data;
-
-        // Function to get the rgba profile of a pixel at (x, y)
-        function getRGBA(x, y) {
-            // Data is represented as a flattened array. Each pixel's data is 4 integers
-            const Idx = (y * Width + x) * 4;
-            return [PageData[Idx], PageData[Idx + 1], PageData[Idx + 2], PageData[Idx + 3]];
-        }
-        // Function to set the rgba profile of a pixel at (x, y)
-        function setRGBA(x, y, r, g, b, a = 255) {
-            const Idx = (y * Width + x) * 4;
-            PageData[Idx] = r;
-            PageData[Idx + 1] = g;
-            PageData[Idx + 2] = b;
-            PageData[Idx + 3] = a;
-        }
-        // See if a pixel is a similar enough color to fill based on the original selected pixel
-        const SelectedColor = getRGBA(x, y);
-        function comparePixels(x2, y2) {
-            const Pixel = getRGBA(x2, y2);
-            // Compare rgb channels of pixels
-            const RGBTolerance = 138;
-            const SquareError = (SelectedColor[0] - Pixel[0]) ** 2 +
-                                (SelectedColor[1] - Pixel[1]) ** 2 +
-                                (SelectedColor[2] - Pixel[2]) ** 2;
-            // Compare alpha channels
-            const AlphaTolerance = 254;
-            const AlphaError = Math.abs(SelectedColor[3] - Pixel[3]);
-                
-            // Return a boolean
-            return (SquareError <= RGBTolerance**2) && (AlphaError <= AlphaTolerance);
-        }
-            
-        // Stack to track which pixels must be filled
-        const FillStack = [];
-        FillStack.push([x, y]);
-        // Set to track visited pixels
-        const Visited = new Set();
-        // Loop through stack and track pixels to fill
-        while (FillStack.length > 0) {
-            // Get the top pixel on the stack
-            const CoordPair = FillStack.pop();
-            const CoordX = CoordPair[0];
-            const CoordY = CoordPair[1];
-            // Fill pixel
-            setRGBA(CoordX, CoordY, FillColor[0], FillColor[1], FillColor[2], 255);
-            Visited.add(`${CoordX},${CoordY}`);
-
-            // List of the pixel above, below, left, and right of the popped pixel
-            const NextCoords = [[CoordX-1, CoordY], [CoordX+1, CoordY], [CoordX, CoordY-1], [CoordX, CoordY+1]];
-            // Loop through the next pixels
-            for (const [nX, nY] of NextCoords) {
-                if (checkInBounds(nX, nY) && comparePixels(nX, nY) && !Visited.has(`${nX},${nY}`)) {
-                    // Push pixels to stack for review and set for tracking
-                    FillStack.push([nX, nY]);
-                }
-            }
-        }
-        // Fill canvas with new paint pixel
-        ctx.putImageData(PageImageData, 0, 0);
-    }
-    else if (IsSameColor) {
-        console.log("You're trying to fill in a pixel of the same color!");
-    }
-    else if (!checkInBounds(x, y)) {
-        console.log("This pixel is out of the canvas' bounds.");
-    }
-}
-// Draws a single pixel given an x and y coordinate.
-function drawPoint(x, y) {
-    if (brushType === "colorPicker") {
-        colorPicker(x, y);
-    }
-    // Set the color of the canvas brush
-    ctx.fillStyle = brushColor;
-    if (brushType === "pencil") {
-        pencil(x, y);
-    }
-    else if (brushType === "eraser") {
-        // Erase in the shape of a square
-        ctx.clearRect(x, y, brushSize, brushSize);
-    }
-    else if (brushType === "paintBucket") {
-        paintBucket(x, y);
-    }
-    else if (brushType === "sprayPaint") {
-        /*
-        function getPixelArea(x, y, radius) {
-            const Pixels = [];
-            for (let x1 = x-radius; x1 < x+radius; x1++) {
-                for (let y1 = y-radius; y1 < y+radius; y1++) {
-                    if (x1 >= 0 && x1 < Width && y1 >= 0 && y1 < Height) {
-                        const Distance = Math.sqrt((x1-x)**2-(y1-y)**2);
-                        if (Distance <= radius && !([x1, y1] in Pixels)) {
-                            Pixels.push([x1, y1]);
-                        }
-                    }
-                }
-            }
-            return Pixels;
-        }
-        const Radius = brushSize/2;
-        const Pixels = getPixelArea(x, y, Radius);
-        //if (isMouseDown === true) {
-            // Randomly fill a pixel within radius once every interval
-            setTimeout(() => {
-                
-            }, "1000");
-        //}
-        */
-    }
-}
-// Draws a line between two points using Bresenham's line algorithm (version that supports all octants).
-// (I barely understand the full octant version.)
-function drawLine(x0, y0, x1, y1) {
-    const dx = Math.abs(x1 - x0);
-    const sx = x0 < x1 ? 1 : -1;
-    const dy = -Math.abs(y1 - y0);
-    const sy = y0 < y1 ? 1 : -1;
-    let error = dx + dy;
-
-    while (true) {
-        drawPoint(x0, y0);
-        let e2 = error * 2;
-        if (e2 >= dy) {
-            if (x0 === x1) {
-                break;
-            }
-            error += dy;
-            x0 += sx;
-        }
-        if (e2 <= dx) {
-            if (y0 === y1) {
-                break;
-            }
-            error += dx;
-            y0 += sy;
-        }
-    }
-}
+// Track x and y coordinates of mouse
+var x;
+var y;
 
 // Boolean to check if the left mouse button is being held down.
 var isMouseDown = false;
 // Variables that store the previously held x and y coordinates for line drawing.
 var prevX = null;
 var prevY = null;
-// Main draw function.
-function draw(event) {
-    // Set x and y coordinates of mouse based on canvas location on document
-    const Bounding = canvas.getBoundingClientRect();
-    let x = Math.floor(event.clientX - Bounding.left);
-    let y = Math.floor(event.clientY - Bounding.top);
-
-    // Update the current pixel tracker element
-    const headerH3 = document.getElementById("header-h3")
-    headerH3.innerText = "Current Pixel: (" + x + "," + y +")";
-    
-    // If user is drawing, appropriately draw points and lines
-    if (isMouseDown) {
-        if (prevX === null && prevY === null) {
-            drawPoint(x, y);
-        }
-        else {
-            drawLine(prevX, prevY, x, y);
-        }
-        // Update prevX and prevY to new coordinates
-        prevX = x;
-        prevY = y;
-    }
-}
-
-// Event listener to modify isMouseDown boolean.
+// Event listener to handle actions when left-mouse button is held.
 document.addEventListener("mousedown", (event) => {
     // If left mouse button is held down, set the boolean accordingly
     if (event.button === 0) {
         isMouseDown = true;
-        // Set x and y coordinates of mouse based on canvas location on document
-        const Bounding = canvas.getBoundingClientRect();
-        let x = Math.floor(event.clientX - Bounding.left);
-        let y = Math.floor(event.clientY - Bounding.top);
-        // Draw a singular point for a mouse click
-        drawPoint(x, y);
         prevX = x;
         prevY = y;
+
+        // Draw a singular point in the event mouse is not moving
+        const Bounding = canvas.getBoundingClientRect();
+        x = Math.floor(event.clientX - Bounding.left);
+        y = Math.floor(event.clientY - Bounding.top);
+        drawPoint(x, y);
     }
 });
-// Event listener to modify isMouseDown boolean and reset prevX and prevY.
+// Event listener to handle actions when left-mouse button is released.
 document.addEventListener("mouseup", (event) => {
     isMouseDown = false;
     prevX = null;
     prevY = null;
 });
-// Event listener specifically for the canvas to call draw() upon mouse movement.
-canvas.addEventListener("mousemove", (event) => draw(event));
+// Event listener to handle actions when mouse is moving.
+canvas.addEventListener("mousemove", (event) => {
+    // Set x and y coordinates of mouse based on canvas location on document
+    const Bounding = canvas.getBoundingClientRect();
+    x = Math.floor(event.clientX - Bounding.left);
+    y = Math.floor(event.clientY - Bounding.top);
+    // Update the current pixel tracker element
+    const headerH3 = document.getElementById("header-h3")
+    headerH3.innerText = "Current Pixel: (" + x + "," + y +")";
+
+    // If mouse is held down, call the draw function
+    if (isMouseDown) {
+        draw(event);
+    }
+});

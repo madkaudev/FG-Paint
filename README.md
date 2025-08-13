@@ -1,7 +1,14 @@
 # FG-Paint
 Online, Javascript based paint tool. Draw a little.<br>
 <br>
-Version 0.2.1 (Current Version)
+Version 0.3.0 (Current Version)
+<br>
+- Added the spray paint feature
+- Included some accessibility features to buttons
+- Refactored code a whole lot more
+- Next feature will be undo/redo
+
+Version 0.2.1
 <br>
 - Dynamic canvas that resizes to your screen size
 - Refactored code

@@ -8,14 +8,12 @@ const brushSizeButton = document.getElementById("set-brush-size");
 const eraserButton = document.getElementById("set-eraser");
 const pencilButton = document.getElementById("set-pencil");
 const paintBucketButton = document.getElementById("set-paint-bucket");
-//const sprayPaintButton = document.getElementById("set-spray-paint");
+const sprayPaintButton = document.getElementById("set-spray-paint");
 const colorPickerButton = document.getElementById("set-color-picker");
 const ColorInput = document.getElementById("color-input");
-//const alphaButton = document.getElementById("set-alpha");
 
 // Start-up settings.
 window.addEventListener("DOMContentLoaded", (event) => {
-    //ctx.fillStyle = brushColor;
     ColorInput.value = brushColor;
 });
 
@@ -27,20 +25,12 @@ function changeBrushSize() {
     }
     brushSize = parseInt(size);
 }
-// Function to prompt for a new alpha.
-//function changeAlpha() {
-    //let alpha = prompt("Enter alpha:");
-    //while (alpha < 0 || alpha > 255 || isNaN(alpha)) {
-        //alpha = prompt("Enter alpha (Must be in between 0 and 255):", "255");
-    //}
-    //console.log(`Setting alpha to ${alpha/255}`);
-    //ctx.globalAlpha = parseInt(alpha) / 255;
-//}
 
 // Change brush size button.
 brushSizeButton.addEventListener("click", () => {
     console.log("Clicked brush-size button.");
     changeBrushSize();
+    brushType = "brushSize";
 });
 // Eraser button.
 eraserButton.addEventListener("click", () => {
@@ -58,10 +48,10 @@ paintBucketButton.addEventListener("click", () => {
     brushType = "paintBucket";
 });
 // Spray Paint button.
-//sprayPaintButton.addEventListener("click", () => {
-    //console.log("Clicked set-spray-paint button.");
-    //brushType = "sprayPaint";
-//});
+sprayPaintButton.addEventListener("click", () => {
+    console.log("Clicked set-spray-paint button.");
+    brushType = "sprayPaint";
+});
 // Color picker button.
 colorPickerButton.addEventListener("click", () => {
     console.log("Clicked set-color-picker button.");
@@ -71,10 +61,8 @@ colorPickerButton.addEventListener("click", () => {
 ColorInput.addEventListener("change", (event) => {
     console.log("Clicked color-input button.");
     brushColor = event.target.value;
+    // Set the color of the canvas brush
+    ctx.fillStyle = brushColor;
+    console.log("Changed brush color to " + brushColor + ".")
     brushType = "colorInput";
 });
-// Change alpha button.
-//alphaButton.addEventListener("click", () => {
-    //console.log("Clicked set-alpha button.");
-    //changeAlpha();
-//});
