@@ -1,16 +1,22 @@
 // Initialize the canvas.
 const canvas = document.getElementById("paint");
 const ctx = canvas.getContext("2d");
-//ctx.imageSmoothingEnabled = false;
-// Adjust width and height of canvas based on viewport
-canvas.width = screen.width * 2 / 3 * window.devicePixelRatio;
-canvas.height = screen.height * 2 / 3 * window.devicePixelRatio;
-// Get new width and height of canvas
+// Adjust width and height of canvas based on viewport.
+canvas.width = screen.width * 2 / 3;
+canvas.height = screen.height * 2 / 3;
+// Get new width and height of canvas.
 const Width = canvas.width;
 const Height = canvas.height;
-// Track x and y coordinates of mouse
+// Track x and y coordinates of mouse.
 var x;
 var y;
+// Track the states of the canvas for undo and redo.
+const stateStack = [];
+var statePointer = 0;
+const PageImageData = ctx.getImageData(0, 0, Width, Height);
+stateStack.push(PageImageData);
+// State-altering brush types.
+const StateAlteringBrushes = ["pencil", "eraser", "paintBucket", "sprayPaint"];
 
 // Boolean to check if the left mouse button is being held down.
 var isMouseDown = false;
@@ -18,18 +24,11 @@ var isMouseDown = false;
 var prevX = null;
 var prevY = null;
 // Event listener to handle actions when left-mouse button is held.
-document.addEventListener("mousedown", (event) => {
-    // If left mouse button is held down, set the boolean accordingly
+canvas.addEventListener("mousedown", (event) => {
+    // If left mouse button is held down, set the boolean accordingly and draw
     if (event.button === 0) {
         isMouseDown = true;
-        prevX = x;
-        prevY = y;
-
-        // Draw a singular point in the event mouse is not moving
-        const Bounding = canvas.getBoundingClientRect();
-        x = Math.floor(event.clientX - Bounding.left);
-        y = Math.floor(event.clientY - Bounding.top);
-        drawPoint(x, y);
+        draw(event);
     }
 });
 // Event listener to handle actions when left-mouse button is released.
@@ -37,6 +36,18 @@ document.addEventListener("mouseup", (event) => {
     isMouseDown = false;
     prevX = null;
     prevY = null;
+});
+// Event listener to handle updating the stateStack.
+canvas.addEventListener("mouseup", (event) => {
+    if (!StateAlteringBrushes.includes(brushType)) return;
+    // If stack pointer is not at the top, remove all states above it
+    if (statePointer < stateStack.length - 1) {
+        stateStack.splice(statePointer + 1, stateStack.length - statePointer + 1);
+    }
+    // Push the newest state
+    const PageImageData = ctx.getImageData(0, 0, Width, Height);
+    stateStack.push(PageImageData);
+    statePointer++;
 });
 // Event listener to handle actions when mouse is moving.
 canvas.addEventListener("mousemove", (event) => {

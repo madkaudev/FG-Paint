@@ -11,10 +11,18 @@ const paintBucketButton = document.getElementById("set-paint-bucket");
 const sprayPaintButton = document.getElementById("set-spray-paint");
 const colorPickerButton = document.getElementById("set-color-picker");
 const ColorInput = document.getElementById("color-input");
+const undoButton = document.getElementById("undo");
+const redoButton = document.getElementById("redo");
 
+const OptionContainer = document.getElementById("option-container");
+const ButtonCount = OptionContainer.childElementCount;
+const ButtonSize = 64;
 // Start-up settings.
 window.addEventListener("DOMContentLoaded", (event) => {
     ColorInput.value = brushColor;
+    if (ButtonCount*ButtonSize > screen.height) {
+        OptionContainer.style.flexDirection = "row";
+    }
 });
 
 // Function to prompt for a new brush size.
@@ -65,4 +73,16 @@ ColorInput.addEventListener("change", (event) => {
     ctx.fillStyle = brushColor;
     console.log("Changed brush color to " + brushColor + ".")
     brushType = "colorInput";
+});
+// Undo button.
+undoButton.addEventListener("click", () => {
+    console.log("Clicked undo button.");
+    brushType = "undo";
+    undo();
+});
+// Redo button.
+redoButton.addEventListener("click", () => {
+    console.log("Clicked redo button.");
+    brushType = "redo";
+    redo();
 });

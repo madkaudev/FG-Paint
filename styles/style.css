@@ -1,24 +1,38 @@
-/* Set the background color */
+/* Set the background color. */
 body {
+    margin: 0;
     background-color: rgb(150, 157, 163);
 }
 
-/* Option class represents buttons that control the user's tools */
+/* Set margins of text-heavy elements */
+header, footer {
+    margin-left: 2%;
+    margin-right: 2%;
+}
+
+/* Set the look of the dividers. */
+.divider {
+    height: 1px;
+    background-color: black;
+}
+
+/* Option class represents buttons that control the user's tools. */
 .option {
     width: 64px;
     height: 64px;
 }
 
-/* Set the main container properties */
+/* Set the main container properties. */
 #main-container {
     display: flex;
-    margin: 1%;
+    margin-left: 2%;
+    margin-right: 2%;
 }
 
-/* Set the options container properties */
+/* Set the options container properties. */
 #option-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, 1fr);
-    grid-auto-rows: 64px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
     margin-left: 2%;
 }

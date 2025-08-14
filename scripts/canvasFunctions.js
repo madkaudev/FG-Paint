@@ -178,6 +178,22 @@ function sprayPaint(x, y) {
         ctx.fillRect(CoordX, CoordY, 1, 1);
     }
 }
+// Undo function.
+function undo() {
+    // Restore previous state from stack
+    if (statePointer > 0) {
+        statePointer--;
+        ctx.putImageData(stateStack[statePointer], 0, 0);
+    }
+}
+// Redo function.
+function redo() {
+    // Restore next state from stack
+    if (statePointer < stateStack.length - 1) {
+        statePointer++;
+        ctx.putImageData(stateStack[statePointer], 0, 0);
+    }
+}
 
 // Draws a single pixel given an x and y coordinate.
 function drawPoint(x, y) {
@@ -196,7 +212,7 @@ function drawPoint(x, y) {
             break;
         case "sprayPaint":
             sprayPaint(x, y);
-            break;
+            break; 
     }
 }
 // Draws a line between two points using Bresenham's line algorithm (version that supports all octants).
@@ -230,7 +246,10 @@ function drawLine(x0, y0, x1, y1) {
 // Main draw function.
 function draw(event) {
     // Appropriately draw points and lines
-    if (prevX === null && prevY === null) {
+    if (prevX === null || prevY === null) {
+        // Update prevX and prevY to new coordinates
+        prevX = x;
+        prevY = y;
         drawPoint(x, y);
     }
     else {
