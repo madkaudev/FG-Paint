@@ -56,11 +56,11 @@ canvas.addEventListener("mousemove", (event) => {
     x = Math.floor(event.clientX - Bounding.left);
     y = Math.floor(event.clientY - Bounding.top);
     // Update the current pixel tracker element
-    const headerH3 = document.getElementById("header-h3")
+    const headerH3 = document.getElementById("header-h3");
     headerH3.innerText = "Current Pixel: (" + x + "," + y +")";
-
     // If mouse is held down, call the draw function
     if (isMouseDown) {
         draw(event);
     }
 });
+

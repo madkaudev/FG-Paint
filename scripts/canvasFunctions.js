@@ -33,8 +33,8 @@ function pencil(x, y) {
 }
 // Eraser function.
 function eraser(x, y) {
-    // Erase in the shape of a square
-    ctx.clearRect(x, y, brushSize, brushSize);
+    // Offest x and y to be in the middle of contact pixel
+    ctx.clearRect(Math.floor(x - brushSize/2), Math.floor(y - brushSize/2), brushSize, brushSize);  
 }
 // Color picker function.
 function colorPicker(x, y) {
@@ -160,7 +160,7 @@ function sprayPaint(x, y) {
     // Every 5 ms, draw a pixel within the circle of (x,y)
     const IntervalID = setInterval(sprayPixel, 5);
     function sprayPixel() {
-        // Break out of interval if mouse is lifted or array is empty
+        // Break out of interval if mouse/touch is lifted or array is empty
         if (!isMouseDown || Pixels.length === 0) {
             clearInterval(IntervalID);
             // Return statement stops Pixels array from being popped while empty
@@ -244,7 +244,7 @@ function drawLine(x0, y0, x1, y1) {
     }
 }
 // Main draw function.
-function draw(event) {
+function draw() {
     // Appropriately draw points and lines
     if (prevX === null || prevY === null) {
         // Update prevX and prevY to new coordinates

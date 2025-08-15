@@ -4,23 +4,25 @@ var brushType = "pencil";
 var brushColor = "#000000";
 
 // HTML elements.
-const brushSizeButton = document.getElementById("set-brush-size");
-const eraserButton = document.getElementById("set-eraser");
-const pencilButton = document.getElementById("set-pencil");
-const paintBucketButton = document.getElementById("set-paint-bucket");
-const sprayPaintButton = document.getElementById("set-spray-paint");
-const colorPickerButton = document.getElementById("set-color-picker");
+const BrushSizeButton = document.getElementById("set-brush-size");
+const EraserButton = document.getElementById("set-eraser");
+const PencilButton = document.getElementById("set-pencil");
+const PaintBucketButton = document.getElementById("set-paint-bucket");
+const SprayPaintButton = document.getElementById("set-spray-paint");
+const ColorPickerButton = document.getElementById("set-color-picker");
 const ColorInput = document.getElementById("color-input");
-const undoButton = document.getElementById("undo");
-const redoButton = document.getElementById("redo");
-
+const UndoButton = document.getElementById("undo");
+const RedoButton = document.getElementById("redo");
+const Canvas = document.getElementById("paint");
 const OptionContainer = document.getElementById("option-container");
+
 const ButtonCount = OptionContainer.childElementCount;
-const ButtonSize = 64;
+const ButtonSize = 48;
 // Start-up settings.
 window.addEventListener("DOMContentLoaded", (event) => {
     ColorInput.value = brushColor;
-    if (ButtonCount*ButtonSize > screen.height) {
+    // If the buttons would overflow, use a row flex-direction
+    if (ButtonCount*ButtonSize > canvas.height) {
         OptionContainer.style.flexDirection = "row";
     }
 });
@@ -35,33 +37,33 @@ function changeBrushSize() {
 }
 
 // Change brush size button.
-brushSizeButton.addEventListener("click", () => {
+BrushSizeButton.addEventListener("click", () => {
     console.log("Clicked brush-size button.");
     changeBrushSize();
     brushType = "brushSize";
 });
 // Eraser button.
-eraserButton.addEventListener("click", () => {
+EraserButton.addEventListener("click", () => {
     console.log("Clicked set-eraser button.");
     brushType = "eraser";
 });
 // Pencil button.
-pencilButton.addEventListener("click", () => {
+PencilButton.addEventListener("click", () => {
     console.log("Clicked set-pencil button.");
     brushType = "pencil";
 });
 // Paint bucket button.
-paintBucketButton.addEventListener("click", () => {
+PaintBucketButton.addEventListener("click", () => {
     console.log("Clicked set-paint-bucket button.");
     brushType = "paintBucket";
 });
 // Spray Paint button.
-sprayPaintButton.addEventListener("click", () => {
+SprayPaintButton.addEventListener("click", () => {
     console.log("Clicked set-spray-paint button.");
     brushType = "sprayPaint";
 });
 // Color picker button.
-colorPickerButton.addEventListener("click", () => {
+ColorPickerButton.addEventListener("click", () => {
     console.log("Clicked set-color-picker button.");
     brushType = "colorPicker";
 });
@@ -75,13 +77,13 @@ ColorInput.addEventListener("change", (event) => {
     brushType = "colorInput";
 });
 // Undo button.
-undoButton.addEventListener("click", () => {
+UndoButton.addEventListener("click", () => {
     console.log("Clicked undo button.");
     brushType = "undo";
     undo();
 });
 // Redo button.
-redoButton.addEventListener("click", () => {
+RedoButton.addEventListener("click", () => {
     console.log("Clicked redo button.");
     brushType = "redo";
     redo();

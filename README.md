@@ -1,7 +1,13 @@
 # FG-Paint
 Online, Javascript based paint tool. Draw a little.<br>
 <br>
-Version 0.4.0 (Current Version)
+Version 0.5.0 (Current Version)
+<br>
+- Added touch/stylus support for mobile devices
+- Changed styles and appearances of elements
+- Cleaned up some code
+
+Version 0.4.0
 <br>
 - Finally added the undo and redo features
 - Responsive design for all screen sizes

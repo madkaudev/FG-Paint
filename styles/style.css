@@ -8,6 +8,7 @@ body {
 header, footer {
     margin-left: 2%;
     margin-right: 2%;
+    text-align: center;
 }
 
 /* Set the look of the dividers. */
@@ -16,17 +17,9 @@ header, footer {
     background-color: black;
 }
 
-/* Option class represents buttons that control the user's tools. */
-.option {
-    width: 64px;
-    height: 64px;
-}
-
 /* Set the main container properties. */
 #main-container {
     display: flex;
-    margin-left: 2%;
-    margin-right: 2%;
 }
 
 /* Set the options container properties. */
@@ -34,5 +27,18 @@ header, footer {
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
-    margin-left: 2%;
+    justify-content: center;
+    margin-right: auto;
+    margin-left: auto;
+    align-items: center;
+}
+
+/* Option class represents buttons that control the user's tools. */
+.option {
+    width: 48px;
+    height: 48px;
+    margin-top: auto;
+    margin-bottom: auto;
+    border: 2px solid rgb(180, 179, 179);
+    border-radius: 5px;
 }
