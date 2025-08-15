@@ -1,7 +1,7 @@
 /* Set the background color. */
 body {
     margin: 0;
-    background-color: rgb(150, 157, 163);
+    background-color: rgb(243, 180, 103);
 }
 
 /* Set margins of text-heavy elements */
@@ -42,3 +42,4 @@ header, footer {
     border: 2px solid rgb(180, 179, 179);
     border-radius: 5px;
 }
+
