@@ -28,7 +28,7 @@ canvas.addEventListener("mousedown", (event) => {
     // If left mouse button is held down, set the boolean accordingly and draw
     if (event.button === 0) {
         isMouseDown = true;
-        draw(event);
+        draw(event);    // In canvasfunctions.js
     }
 });
 // Event listener to handle actions when left-mouse button is released.
@@ -60,7 +60,7 @@ canvas.addEventListener("mousemove", (event) => {
     headerH3.innerText = "Current Pixel: (" + x + "," + y +")";
     // If mouse is held down, call the draw function
     if (isMouseDown) {
-        draw(event);
+        draw(event);    // In canvasfunctions.js
     }
 });
 

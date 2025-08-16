@@ -1,6 +1,7 @@
-/* Set painting canvas background color to white */
+/* Set painting canvas background color to white and center canvas. */
 #paint {
     background-color: white;
     display: block;
     margin-left: auto;
+    align-self: center;
 }

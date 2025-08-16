@@ -10,7 +10,7 @@ canvas.addEventListener("touchstart", (event) => {
     // Prevent scrolling and zooming while touch starts
     event.preventDefault()
     // Draw for the event of a single pixel touch without movement
-    draw();
+    draw(); // In canvasfunctions.js
 });
 // Event listener to handle actions when touch ends.
 document.addEventListener("touchend", (event) => {
@@ -38,12 +38,12 @@ canvas.addEventListener("touchmove", (event) => {
     x = Math.floor(Touch.clientX - Bounding.left);
     y = Math.floor(Touch.clientY - Bounding.top);
     // Update the current pixel tracker element
-    if (checkInBounds(x, y)) {
+    if (checkInBounds(x, y)) {  // In canvasfunctions.js
         const headerH3 = document.getElementById("header-h3");
         headerH3.innerText = "Current Pixel: (" + x + "," + y +")";
     }
     // If touch is active, call the draw function
     if (isMouseDown) {
-        draw();
+        draw(); // In canvasfunctions.js
     }
 });

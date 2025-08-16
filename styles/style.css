@@ -1,6 +1,12 @@
-/* Set the background color. */
+/* Body properties. */
 body {
     margin: 0;
+    background-color: rgb(150, 157, 163);
+    
+}
+
+/* Set the background color. */
+main {
     background-color: rgb(243, 180, 103);
 }
 
@@ -35,11 +41,15 @@ header, footer {
 
 /* Option class represents buttons that control the user's tools. */
 .option {
+    box-sizing: content-box;
     width: 48px;
     height: 48px;
+    padding: 1px;
     margin-top: auto;
     margin-bottom: auto;
     border: 2px solid rgb(180, 179, 179);
     border-radius: 5px;
 }
-
+.option:hover {
+    background-color: rgb(201, 201, 201);
+}
