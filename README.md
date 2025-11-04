@@ -1,7 +1,11 @@
 # FG-Paint
 Online Javascript based paint tool. Draw a little.<br>
 <br>
-Version 1.0.3 (Current Version)
+Version 1.0.4 (Current Version)
+- Reverted how canvas size works
+- Removed tagline at footer
+
+Version 1.0.3
 - Changed how width and height of canvas work
 
 Version 1.0.2
