@@ -1,7 +1,13 @@
 # FG-Paint
-Online, Javascript based paint tool. Draw a little.<br>
+Online Javascript based paint tool. Draw a little.<br>
 <br>
-Version 1.0.1 (Current Version)
+Version 1.0.2 (Current Version)
+- Fixed a bug with spray painting with 1 px brush size
+- Cleaned up comments
+- Changed color design of the website, more of a beach vibe
+- Removed a comma from the project tagline
+
+Version 1.0.1
 - Updated with favicon and images for Open Graph Protocol and Twitter Cards
 
 Version 1.0.0

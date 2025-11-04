@@ -141,9 +141,9 @@ function paintBucket(x, y) {
 }
 // Spray paint function.
 function sprayPaint(x, y) {
-    // Find every possible pixel that exists in a radius of (x,y)
-    const Radius = brushSize/2;
+    const Radius = Math.max(1, brushSize/2);
     const Pixels = [];
+    // Find every possible pixel that exists in a radius of (x,y)
     for (let x2 = x-Radius; x2 <= x+Radius; x2++) {
         for (let y2 = y-Radius; y2 <= y+Radius; y2++) {
             // Make sure pixel is within the canvas

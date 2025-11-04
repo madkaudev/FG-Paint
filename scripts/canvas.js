@@ -63,4 +63,3 @@ canvas.addEventListener("mousemove", (event) => {
         draw(event);    // In canvasfunctions.js
     }
 });
-

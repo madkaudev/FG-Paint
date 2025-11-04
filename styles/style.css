@@ -1,34 +1,25 @@
-/* Body properties. */
 body {
     margin: 0;
-    background-color: rgb(150, 157, 163);
-    
+    background-color: rgb(12, 181, 211);
 }
 
-/* Set the background color. */
 main {
-    background-color: rgb(243, 180, 103);
+    background-color: rgb(255, 213, 173);
 }
 
-/* Set margins of text-heavy elements */
 header, footer {
-    margin-left: 2%;
-    margin-right: 2%;
     text-align: center;
 }
 
-/* Set the look of the dividers. */
 .divider {
     height: 1px;
     background-color: black;
 }
 
-/* Set the main container properties. */
 #main-container {
     display: flex;
 }
 
-/* Set the options container properties. */
 #option-container {
     display: flex;
     flex-direction: column;
