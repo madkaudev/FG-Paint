@@ -1,7 +1,10 @@
 # FG-Paint
 Online Javascript based paint tool. Draw a little.<br>
 <br>
-Version 1.0.2 (Current Version)
+Version 1.0.3 (Current Version)
+- Changed how width and height of canvas work
+
+Version 1.0.2
 - Fixed a bug with spray painting with 1 px brush size
 - Cleaned up comments
 - Changed color design of the website, more of a beach vibe

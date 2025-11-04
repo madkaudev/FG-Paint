@@ -2,8 +2,8 @@
 const canvas = document.getElementById("paint");
 const ctx = canvas.getContext("2d");
 // Adjust width and height of canvas based on viewport.
-canvas.width = screen.width * 2 / 3;
-canvas.height = screen.height * 2 / 3;
+canvas.width = Math.floor(window.innerWidth * 2 / 3);
+canvas.height = Math.floor(window.innerHeight * 2 / 3);
 // Get new width and height of canvas.
 const Width = canvas.width;
 const Height = canvas.height;
